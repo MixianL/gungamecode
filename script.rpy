@@ -1,13 +1,40 @@
 ﻿# 游戏的脚本可置于此文件中。
 
+image black = "#000"
+image white = "#ffffff"
+
+#定义结局界面
+define gui.gallery_slot_height = 100
+define gui.gallery_slot_width = 200
+define gui.gallery_slot_cols = 3
+define gui.gallery_slot_rows = 2
  
+init python:
+    if persistent.unlock_1 == None:
+        persistent.unlock_1 = False
+ 
+    if persistent.unlock_2 == None:
+        persistent.unlock_2 = False
+ 
+    if persistent.unlock_3 == None:
+        persistent.unlock_3 = False
+ 
+    if persistent.unlock_4 == None:
+        persistent.unlock_4 = False
+
 
 
 #定义结局
 default ending0 = False
+
+
 #定义一下序章结局的数值，这样更新的时候可以保证存档读取
-default xuzhangjiejv = 0
+default xuzhangjiejv = False
+default dierzhixian = False
 default money = 0
+default yanggaozhen_haogan = 0
+
+
 # 声明此游戏使用的角色。颜色参数可使角色姓名着色。
 define n = Character("贺美丽",color="#ff69b4")
 define m = Character("武不疯",color="#2e8b57")
@@ -39,7 +66,20 @@ screen simp_screen():
             text "KIND-1"
             textbutton "确定":
                 action Return(True)
-
+screen haoganjia_screen():
+    frame:
+        xalign 0.5 ypos 50
+        vbox:
+            text "LIKE+1"
+            textbutton "确定":
+                action Return(True)
+screen haoganjian_screen():
+    frame:
+        xalign 0.5 ypos 50
+        vbox:
+            text "LIKE-1"
+            textbutton "确定":
+                action Return(True)
  
 label start:
 
@@ -295,8 +335,9 @@ label jieshoule:
     e "那，我就先走一步"
     "......"
     t "序章完"
+    $ xuzhangjiejv = True
     jump zhangjiexuanze2
-    $ xuzhangjiejv = 1
+    
 label xiee:
     $ kindness = kindness - 1
     call screen simp_screen
@@ -317,10 +358,11 @@ if kindness >= 1:
     m "真没用！！"
     t "武不疯愤怒的大叫"
     t "武不疯挣脱开你，随手拿起桌上的小型雕像，对着你狠狠的砸了下去"
-    scene heian
+    scene black
     m "好好睡一觉吧"
     "......"
-    $ xuzhangjiejv = 2
+    $ xuzhangjiejv = False
+    $ dierzhixian = True
     "序章完"
     jump zhangjiexuanze2
     
@@ -334,7 +376,8 @@ label ending0:
     play sound shotting
     $ renpy.block_rollback()  
     t "你死了"
-    $ ending0 = True
+    $ ending0 = True #这东西好像没用了?
+    $ persistent.unlock_1 = True
     "{color=#f00}结局E01：简单的死亡,没有一人追忆{/color}"
     jump huamian
 label zhengyi:
@@ -351,7 +394,7 @@ label wancan:
     scene heian
     t "你来到厨房"
     "序章完"
-    $ xuzhangjiejv = 3
+    $ xuzhangjiejv = False
     jump zhangjiexuanze2
 label hemeili:
     scene keting
@@ -419,6 +462,35 @@ menu:
 
 
 label diyizhang:
+if xuzhangjiejv:
+    "TIPS:你现在的金钱有"
+    "你现在的善良值为"
+    jump wuyangqi_xiadu  #武扬柒下毒,自己承认,之前你领了武不疯500元
+else:
+    jump diercixuanze
+label diercixuanze:
+if dierzhixian:
+    jump wuyangqi_jiahuo
+else:
+    jump zijixiadu
+    
+label wuyangqi_xiadu:
+    scene keting
+    with fade
+    t "你来到了客厅,正好遇见贺美丽"
+    n "给我倒杯咖啡来"
+    "她慵懒的躺在天鹅绒的沙发上,脸上十分享受"
+    e "好的"
+    "你前往了厨房"
+    scene chufang 
+    with fade
+label wuyangqi_jiahuo:
+
+label zijixiadu:
+
+
+
+
 label huamian:
     return
 

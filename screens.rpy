@@ -289,6 +289,11 @@ screen navigation():
         if main_menu:
 
             textbutton _("开始游戏") action Start()
+            textbutton _("画廊(未完成,别点!)"):
+                text_idle_color gui.idle_color
+                text_hover_color gui.hover_color
+                action [
+                ShowMenu("gallery"), SetField(gh, 'index', 0)]
 
         else:
 
@@ -300,7 +305,7 @@ screen navigation():
 
         textbutton _("设置") action ShowMenu("preferences")
         
-        textbutton _("结局") action ShowMenu("ended")
+        
 
         if _in_replay:
 
@@ -575,11 +580,13 @@ screen about():
             text _("策划：Mixian 剧本：水清漓 米线\n")
             text _("本故事纯属虚构\n")
             text _("赞助鸣谢：水清漓   小袁同学   若无\n")
+            text _("赞助:{a=https://afdian.net/a/mixianzhuye}爱发电{/a}\n")
             
             text _("更新日志：\n")
-            text _("2022/10/18 v0.01beta  \n")
-            text _("2022/10/19 v0.02beta  更新了剧情  增加\"善良\"点数\n")
+            text _("2022/10/18 v0.01alpha  \n")
+            text _("2022/10/19 v0.02alpha   更新了剧情  增加\"善良\"点数\n")
             text _("2022/10/19 v0.03alpha 更新了剧情  增加背景音乐\n")
+            text _("2022/10/22 v0.05alpha 序章更新完成!\n")
 
 
 
